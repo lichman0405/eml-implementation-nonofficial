@@ -139,7 +139,7 @@ uv run eml-benchmark-plot --bundle-dir benchmark_results/full_suite --output-dir
               <li>Deploys the artifact to GitHub Pages on pushes to the main branch.</li>
             </ul>
             <p>
-              In the repository settings, the Pages source should be set to <strong>GitHub Actions</strong>. Once that is enabled, pushes to the default branch will publish the site automatically.
+              The workflow asks <code>actions/configure-pages</code> to enable GitHub Pages automatically. If the repository has never used Pages before and the workflow still lacks permission to enable it, a maintainer can do the one-time setup in repository settings by choosing <strong>GitHub Actions</strong> as the Pages source.
             </p>
           </article>
         </section>
