@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eml"
+version = "0.3.0"
+description = "Elementary functions generated from the EML binary operator."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10",
+    "numpy>=2.2",
+    "sympy>=1.13",
+]
+
+[project.scripts]
+eml-compile = "eml._cli_compile:main"
+eml-benchmark = "eml._cli_benchmark:main"
+eml-benchmark-plot = "eml._cli_benchmark_plot:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

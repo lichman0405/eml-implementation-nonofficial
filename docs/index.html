@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EML Docs</title>
+    <meta
+      name="description"
+      content="GitHub Pages documentation for the EML Python library: theory, implementation, CLI usage, and benchmarks."
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="brand" href="index.html">
+            <span class="brand-mark">EML</span>
+            <span class="brand-copy">
+              <strong>EML Python Library</strong>
+              <small>Elementary functions from one binary operator</small>
+            </span>
+          </a>
+          <nav class="nav">
+            <a class="active" href="index.html">Home</a>
+            <a href="theory.html">Theory</a>
+            <a href="implementation.html">Implementation</a>
+            <a href="guide.html">Guide</a>
+            <a href="benchmarks.html">Benchmarks</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="hero-card">
+              <span class="eyebrow">GitHub Pages Ready</span>
+              <h1>Elementary functions, rebuilt from one operator.</h1>
+              <p class="lead">
+                This site documents a Python implementation of the EML construction from
+                <em>All elementary functions from a single binary operator</em>. It focuses on a clean library API,
+                compiler tooling, benchmark reporting, and publishable documentation.
+              </p>
+              <div class="equation-band">
+                <code>eml(x, y) = exp(x) - log(y)</code>
+              </div>
+              <div class="hero-actions">
+                <a class="button" href="theory.html">Read the derivation</a>
+                <a class="button secondary" href="implementation.html">Study the implementation notes</a>
+                <a class="button secondary" href="guide.html">Use the library</a>
+                <a class="button secondary" href="benchmarks.html">Inspect the benchmarks</a>
+              </div>
+            </div>
+
+            <div class="metric-grid">
+              <article class="metric-card">
+                <strong>11</strong>
+                <span>documented benchmark cases in the published docs bundle</span>
+              </article>
+              <article class="metric-card">
+                <strong>3.55e-15</strong>
+                <span>maximum absolute error in the current docs benchmark run</span>
+              </article>
+              <article class="metric-card">
+                <strong>141.54×</strong>
+                <span>mean slowdown versus direct NumPy evaluation</span>
+              </article>
+              <article class="metric-card">
+                <strong>70</strong>
+                <span>maximum tree depth among the benchmarked functions</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Acknowledgement</h2>
+            <p>
+              Andrzej Odrzywołek deserves full credit for the central idea. The paper is a genuinely elegant piece of mathematical engineering:
+              compact in statement, surprising in conclusion, and unusually generous in reproducibility. It does not merely claim that a single
+              operator works; it shows a constructive path from that operator to the repertoire of a scientific calculator.
+            </p>
+            <p>
+              The accompanying research code also reflects serious craftsmanship. It makes the result inspectable, testable, and portable across
+              symbolic and numeric environments. That combination of conceptual clarity and implementation discipline is rare and worth stating plainly.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Why build this project?</h2>
+            <p>
+              Research code and engineering code serve different needs. The original work is the authoritative source for the mathematical idea.
+              This repository exists to translate that idea into a Python package that is easier to install, test, benchmark, visualize, and publish.
+            </p>
+            <p>
+              Concretely, this project adds a library-style API, a compiler CLI, benchmark bundles, plot generation, GitHub Pages documentation,
+              and a test suite that treats the EML construction as a reusable software component rather than only a proof-of-concept artifact.
+            </p>
+          </article>
+        </section>
+
+        <section class="section card-grid">
+          <article class="feature-card">
+            <h3>Theory-first documentation</h3>
+            <p>
+              The theory page reconstructs exponentials, logarithms, arithmetic, powers, trigonometric functions, and inverse functions directly from EML.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Engineering-focused guide</h3>
+            <p>
+              The guide page explains installation, Python usage, the compiler CLI, benchmark commands, and what the project adds beyond the paper.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Implementation notes</h3>
+            <p>
+              A dedicated page now documents branch choices, complex-domain execution, stability tradeoffs, and why the library avoids shortcut calls to high-level NumPy functions.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Published benchmark artifacts</h3>
+            <p>
+              The benchmark page links to JSON and CSV outputs and embeds the generated PNG plots so the Pages site remains self-contained.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Static site by design</h3>
+            <p>
+              Everything lives under <code>docs/</code>, so the repository can be published through GitHub Pages without an extra build system.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="callout">
+            <h2>What to read first</h2>
+            <ul class="clean">
+              <li><a href="theory.html">Theory</a> if you want the constructive derivation.</li>
+              <li><a href="implementation.html">Implementation</a> if you want branch, stability, and engineering details.</li>
+              <li><a href="guide.html">Guide</a> if you want installation, commands, and API usage.</li>
+              <li><a href="benchmarks.html">Benchmarks</a> if you want empirical accuracy and complexity data.</li>
+            </ul>
+          </article>
+          <article class="callout">
+            <h2>Primary reference</h2>
+            <p>
+              <strong>A. Odrzywołek</strong>, <em>All elementary functions from a single binary operator</em>, arXiv:2603.21852, 2026.
+            </p>
+            <p>
+              <a href="https://arxiv.org/abs/2603.21852">Paper on arXiv</a>
+            </p>
+          </article>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <span>EML documentation site for the Python implementation.</span>
+          <span><a href="https://arxiv.org/abs/2603.21852">Original paper</a></span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

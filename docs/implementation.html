@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EML Implementation Notes</title>
+    <meta
+      name="description"
+      content="Implementation notes for the EML Python library: branch choices, complex arithmetic, stability tradeoffs, and why the code preserves the pure EML chain."
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="brand" href="index.html">
+            <span class="brand-mark">EML</span>
+            <span class="brand-copy">
+              <strong>EML Python Library</strong>
+              <small>Elementary functions from one binary operator</small>
+            </span>
+          </a>
+          <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="theory.html">Theory</a>
+            <a class="active" href="implementation.html">Implementation</a>
+            <a href="guide.html">Guide</a>
+            <a href="benchmarks.html">Benchmarks</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="hero">
+          <div class="hero-card">
+            <span class="eyebrow">Implementation Notes</span>
+            <h1>How the library preserves the constructive EML chain.</h1>
+            <p class="lead">
+              This page is about engineering choices rather than mathematical existence. The central question is simple: if the paper says every standard elementary function can be built from EML,
+              what does it take to implement that claim as a reusable Python package without quietly falling back to ordinary high-level math calls?
+            </p>
+          </div>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Backend choice: NumPy complex128</h2>
+            <p>
+              The project uses NumPy arrays and <code>complex128</code> values as the execution substrate. That is an implementation choice, not a mathematical shortcut.
+              The high-level functions are still expanded through the EML chain; NumPy provides reliable complex arithmetic, broadcasting, and IEEE-style behavior for edge cases.
+            </p>
+            <p>
+              In particular, the construction needs a domain where values such as <code>log(-1)</code> and limiting behaviors like <code>log(0) = -inf</code> are representable enough to support the recursive formulas.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Branch conventions</h2>
+            <p>
+              The implementation follows the principal complex branch. That keeps the EML chain aligned with the usual conventions used by scientific-computing libraries.
+              The imaginary unit is generated with the same sign correction strategy used by the reference implementation, which avoids branch inconsistencies when reconstructing constants such as <code>i</code> and <code>pi</code>.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Why not call high-level NumPy math directly?</h2>
+            <p>
+              Because doing so would erase the point of the project. The goal here is not just to compute the right numeric answers; it is to preserve the constructive reduction from the paper all the way through the software interface.
+            </p>
+            <p>
+              That is why <code>sin</code>, <code>cos</code>, <code>tanh</code>, <code>asin</code>, and the rest are implemented through EML-derived arithmetic rather than delegated to <code>numpy.sin</code> or <code>numpy.log</code> at the top level.
+              The library uses low-level exp/log primitives inside the EML operator, but the exported functions maintain the one-operator expansion.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Why expose compiler trees?</h2>
+            <p>
+              Once formulas are represented as explicit EML trees, the implementation becomes inspectable. That makes it possible to compute depth, leaf counts, graph exports, and benchmark complexity statistics.
+              It also turns the mathematical construction into something that can be visualized, serialized, and compared across expressions.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Numerical stability choices</h2>
+            <p>
+              Some formulas are mathematically equivalent but numerically different. The most explicit example in this codebase is the logistic sigmoid.
+            </p>
+            <pre class="formula-block">1 / (1 + exp(-x))
+0.5 * (1 + tanh(x / 2))</pre>
+            <p>
+              Both formulas are valid, but the second is materially more stable for large negative inputs once expressed through the EML chain. The library therefore keeps the second form while still remaining fully EML-based.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Complexity is part of the story</h2>
+            <p>
+              The benchmark system records tree depth, leaf count, node count, and grouped summaries because the constructive method has real structural cost.
+              Small exponential cases remain close to the primitive; trigonometric and inverse cases expand into much larger trees.
+            </p>
+            <p>
+              That complexity is not a bug in the documentation. It is one of the most important engineering facts revealed by implementing the paper faithfully.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="callout">
+            <h2>Publishability</h2>
+            <p>
+              The repository now keeps docs and benchmark assets under <code>docs/</code> so they can be deployed directly through GitHub Pages. That means the published site contains both prose and real generated artifacts.
+            </p>
+          </article>
+          <article class="callout">
+            <h2>Engineering scope of this repository</h2>
+            <p>
+              The paper gives the main mathematical insight. This repository adds the software layer: stable APIs, tests, CLIs, benchmark bundles, plot generation, and a Pages-ready site that makes the construction easier to inspect and reuse.
+            </p>
+          </article>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <span>Implementation notes for the EML Python package.</span>
+          <span><a href="guide.html">Continue to the guide</a></span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

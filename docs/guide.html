@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EML Guide</title>
+    <meta name="description" content="Installation, Python API usage, compile CLI usage, and benchmark commands for the EML library." />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="brand" href="index.html">
+            <span class="brand-mark">EML</span>
+            <span class="brand-copy">
+              <strong>EML Python Library</strong>
+              <small>Elementary functions from one binary operator</small>
+            </span>
+          </a>
+          <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="theory.html">Theory</a>
+            <a href="implementation.html">Implementation</a>
+            <a class="active" href="guide.html">Guide</a>
+            <a href="benchmarks.html">Benchmarks</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="hero">
+          <div class="hero-card">
+            <span class="eyebrow">Practical Usage</span>
+            <h1>Install, compile, benchmark, publish.</h1>
+            <p class="lead">
+              The point of this repository is to make the EML construction usable as software: a Python package, a compiler, a benchmark harness,
+              a plotting pipeline, and a documentation site that can be pushed directly to GitHub Pages.
+            </p>
+          </div>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Installation</h2>
+            <pre class="code-block">uv venv .venv --clear
+uv sync --dev</pre>
+            <p>
+              The project is designed around a uv-managed virtual environment. Runtime dependencies and developer dependencies are installed into that environment.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Python API</h2>
+            <pre class="code-block">import numpy as np
+import eml
+
+x = np.linspace(-1.0, 1.0, 5)
+print(eml.sin(x))
+print(eml.log1p(0.5))
+print(eml.degrees(eml.pi / 2))
+print(eml.compile_source("sin(x) + sqrt(1 + x**2)"))</pre>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>Compile CLI</h2>
+            <pre class="code-block">uv run eml-compile "sin(x) + sqrt(1 + x**2)"
+uv run eml-compile "Sin[x] + Log[2, x]" --show all --assign x=2
+uv run eml-compile "sin(x) + sqrt(1 + x**2)" --show summary
+uv run eml-compile "sin(x) + sqrt(1 + x**2)" --show mermaid --output docs/assets/tree.mmd
+uv run eml-compile "sin(x) + sqrt(1 + x**2)" --show dot --output docs/assets/tree.dot</pre>
+            <p>
+              Output modes now include <code>source</code>, <code>tree</code>, <code>stats</code>, <code>summary</code>, <code>mermaid</code>, <code>dot</code>, <code>json</code>, and <code>all</code>.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>Benchmark CLI</h2>
+            <pre class="code-block">uv run eml-benchmark
+uv run eml-benchmark --cases exp log sin --sample-count 8192 --repeats 7 --output benchmark_results/report.json
+uv run eml-benchmark --output-dir benchmark_results/full_suite --plot-dir benchmark_results/full_suite/plots
+uv run eml-benchmark-plot --bundle-dir benchmark_results/full_suite --output-dir benchmark_results/full_suite/plots</pre>
+            <p>
+              The benchmark tooling writes structured JSON and CSV reports, grouped summary tables, and PNG plots that can be published directly under <code>docs/</code>.
+            </p>
+          </article>
+        </section>
+
+        <section class="section card-grid">
+          <article class="feature-card">
+            <h3>Parser conveniences</h3>
+            <p>
+              The compiler accepts Python-style syntax, Wolfram-style syntax, and strings prefixed with <code>np.</code>, <code>numpy.</code>, or <code>math.</code>.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Engineering scope</h3>
+            <p>
+              This project adds tests, plotting, Pages-ready docs, CLI entry points, and a library interface intended for repeated use rather than one-off experimentation.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Why not just wrap NumPy?</h3>
+            <p>
+              Because the point here is to preserve the constructive EML chain. The project uses NumPy as a numeric backend, but not as a shortcut for the higher-level math itself.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Implementation notes page</h3>
+            <p>
+              For the branch choices, complex-domain rationale, and stability tradeoffs, see the dedicated <a href="implementation.html">Implementation</a> page.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Why publish under docs/ ?</h3>
+            <p>
+              It keeps the site deployable through GitHub Pages without an extra documentation build step and makes benchmark artifacts part of the published repository state.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="panel">
+            <h2>GitHub Pages deployment</h2>
+            <p>
+              The repository includes a GitHub Actions workflow that tests the package and deploys the <code>docs/</code> directory to GitHub Pages on pushes to the default branch.
+            </p>
+            <pre class="code-block">.github/workflows/deploy-pages.yml</pre>
+            <p>
+              The workflow is intentionally simple because the site is already static. There is no extra documentation build phase beyond committing the generated assets under <code>docs/assets/</code>.
+            </p>
+          </article>
+          <article class="panel">
+            <h2>What the workflow does</h2>
+            <ul class="clean">
+              <li>Installs uv and syncs the project environment.</li>
+              <li>Runs the full test suite.</li>
+              <li>Uploads the <code>docs/</code> directory as the Pages artifact.</li>
+              <li>Deploys the artifact to GitHub Pages on pushes to the main branch.</li>
+            </ul>
+            <p>
+              In the repository settings, the Pages source should be set to <strong>GitHub Actions</strong>. Once that is enabled, pushes to the default branch will publish the site automatically.
+            </p>
+          </article>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <span>Usage guide for the EML Python package.</span>
+          <span><a href="benchmarks.html">See the benchmark pages</a></span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

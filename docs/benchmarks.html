@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EML Benchmarks</title>
+    <meta name="description" content="Benchmark results and plots for the EML Python library, including accuracy, slowdown, and tree complexity." />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="site-header-inner">
+          <a class="brand" href="index.html">
+            <span class="brand-mark">EML</span>
+            <span class="brand-copy">
+              <strong>EML Python Library</strong>
+              <small>Elementary functions from one binary operator</small>
+            </span>
+          </a>
+          <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="theory.html">Theory</a>
+            <a href="implementation.html">Implementation</a>
+            <a href="guide.html">Guide</a>
+            <a class="active" href="benchmarks.html">Benchmarks</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="hero">
+          <div class="hero-card">
+            <span class="eyebrow">Published Benchmark Bundle</span>
+            <h1>Accuracy, slowdown, and tree complexity in one place.</h1>
+            <p class="lead">
+              The plots below were generated from the current docs benchmark bundle with <code>sample_count = 1024</code> and <code>repeats = 2</code>.
+              The same commands are available through the public benchmark CLI.
+            </p>
+          </div>
+        </section>
+
+        <section class="section metric-grid">
+          <article class="metric-card">
+            <strong>3.55e-15</strong>
+            <span>maximum absolute error across the 11 benchmark cases</span>
+          </article>
+          <article class="metric-card">
+            <strong>2.42e-16</strong>
+            <span>mean absolute error across the current docs run</span>
+          </article>
+          <article class="metric-card">
+            <strong>141.54×</strong>
+            <span>mean slowdown versus direct NumPy evaluation</span>
+          </article>
+          <article class="metric-card">
+            <strong>313.60×</strong>
+            <span>maximum slowdown, reached by a principal-branch inverse case</span>
+          </article>
+        </section>
+
+        <section class="section figure-grid">
+          <article class="figure-card">
+            <h2>Error vs slowdown</h2>
+            <img src="assets/plots/error_vs_slowdown.png" alt="Scatter plot of max absolute error versus slowdown" />
+            <p class="caption">
+              Small exponential trees sit near the lower-left corner; larger trigonometric and inverse constructions drift to the right because they expand into much deeper EML trees.
+            </p>
+          </article>
+          <article class="figure-card">
+            <h2>Complexity vs slowdown</h2>
+            <img src="assets/plots/complexity_vs_slowdown.png" alt="Scatter plot of tree leaf count versus slowdown" />
+            <p class="caption">
+              Slowdown is strongly correlated with tree size. That is exactly what a constructive one-operator implementation should make visible.
+            </p>
+          </article>
+          <article class="figure-card">
+            <h2>Category slowdown</h2>
+            <img src="assets/plots/category_slowdown.png" alt="Bar chart of mean slowdown grouped by function category" />
+            <p class="caption">
+              Exponential and stability-oriented helpers are relatively cheap. Trigonometric, hyperbolic, and inverse families are more expensive because their EML representations are structurally larger.
+            </p>
+          </article>
+          <article class="figure-card">
+            <h2>Depth vs error</h2>
+            <img src="assets/plots/depth_vs_error.png" alt="Scatter plot of tree depth versus max absolute error" />
+            <p class="caption">
+              Larger trees do not immediately imply poor accuracy. Even the deeper constructions still track NumPy at roughly machine-precision levels on the sampled domains.
+            </p>
+          </article>
+        </section>
+
+        <section class="section two-column">
+          <article class="table-wrap">
+            <h2>Interpretation</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Observation</th>
+                  <th>Meaning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Exponential cases are shallow and fast</td>
+                  <td>The primitive is already exp-minus-log, so these functions sit close to the operator itself.</td>
+                </tr>
+                <tr>
+                  <td>Trigonometric and inverse cases are much deeper</td>
+                  <td>They rely on Euler-style reductions and logarithmic inverse formulas, which create many nested EML nodes.</td>
+                </tr>
+                <tr>
+                  <td>Accuracy remains very strong</td>
+                  <td>The current implementation stays in the machine-precision regime on the sampled real domains despite large trees.</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="callout">
+            <h2>Published benchmark artifacts</h2>
+            <ul class="clean">
+              <li><a href="assets/benchmark/report.json">report.json</a></li>
+              <li><a href="assets/benchmark/results.csv">results.csv</a></li>
+              <li><a href="assets/benchmark/category_summary.csv">category_summary.csv</a></li>
+              <li><a href="assets/benchmark/domain_summary.csv">domain_summary.csv</a></li>
+              <li><a href="assets/benchmark/complexity_summary.csv">complexity_summary.csv</a></li>
+            </ul>
+          </article>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="site-footer-inner">
+          <span>Benchmark documentation for the EML Python package.</span>
+          <span><a href="guide.html">Back to the guide</a></span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
